@@ -4,6 +4,7 @@
 - Simon Dyhr
 - Emil Weinreich
 - test
+-test2
 
 This repository contains  
 1. Inaugural project. 
