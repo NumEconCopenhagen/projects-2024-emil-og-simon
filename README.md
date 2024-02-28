@@ -3,7 +3,7 @@
 **Group members:**
 - Simon Dyhr
 - Emil Weinreich
-tester
+- test
 
 This repository contains  
 1. Inaugural project. 
