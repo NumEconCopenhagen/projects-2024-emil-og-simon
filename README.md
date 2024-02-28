@@ -1,9 +1,9 @@
 # \[Group name\]
 
 **Group members:**
-- A
-- B
-- C
+- Simon Dyhr
+- Emil Weinreich
+
 
 This repository contains  
 1. Inaugural project. 
