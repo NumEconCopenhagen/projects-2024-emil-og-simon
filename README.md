@@ -1,4 +1,4 @@
-# \[Group name\]
+# \[Emil & Simon\]
 
 **Group members:**
 - A
