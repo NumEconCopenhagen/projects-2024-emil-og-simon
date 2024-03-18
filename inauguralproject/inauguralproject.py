@@ -1,6 +1,7 @@
 from types import SimpleNamespace
 
 
+
 def square(x):
     """ square numpy array
     
@@ -18,7 +19,7 @@ def square(x):
     return y
 
 
-class ExchangeEconomyClass:
+class ExchangeEconomyClass():
 
     def __init__(self):
 
@@ -27,6 +28,8 @@ class ExchangeEconomyClass:
         # a. preferences
         par.alpha = 1/3
         par.beta = 2/3
+        par.p2 = 1
+        par.N = 75
 
         # b. endowments
         par.w1A = 0.8
@@ -58,8 +61,6 @@ class ExchangeEconomyClass:
 
         return x1A,x2A
 
-
-
     def demand_B(self,p1):
         #since numeraire p2 = 1 we add that to the demand functions for consumer B.
 
@@ -69,6 +70,27 @@ class ExchangeEconomyClass:
         x2B = (1-par.beta) * (p1*par.w1B + par.w2B)
 
         return x1B,x2B
+      
+    def find_optimal_allocation(self):
+        # Initialize variables to store optimal allocations
+        optimal_allocations = []
+
+        # Iterate over all possible combinations of goods for consumer A
+        for x1A in range(self.par.N + 1):
+            for x2A in range(self.par.N + 1):
+                x1B = self.par.N - x1A
+                x2B = self.par.N - x2A
+
+                # Calculate utilities for both consumers
+                uA = self.utility_A(x1A, x2A)
+                uB = self.utility_B(x1B, x2B)
+
+                # Check if allocations satisfy the conditions
+                if uA >= self.utility_A(self.par.w1A, self.par.w2A) and uB >= self.utility_B(self.par.w1B, self.par.w2B):
+                    optimal_allocations.append(((x1A/self.par.N, x2A/self.par.N), (x1B/self.par.N, x2B/self.par.N)))
+
+        return optimal_allocations
+      
 
     def check_market_clearing(self,p1):
 
