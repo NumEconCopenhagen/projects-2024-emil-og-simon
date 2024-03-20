@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 import numpy as np
+from scipy import optimize
+
 
 
 def square(x):
@@ -71,6 +73,7 @@ class ExchangeEconomyClass():
 
         return x1B,x2B
       
+    #Delete this function?!
     def find_optimal_allocation(self):
         # Initialize variables to store optimal allocations
         optimal_allocations = []
@@ -104,3 +107,23 @@ class ExchangeEconomyClass():
 
         return eps1,eps2
     
+
+    def find_optimal_allocation_constrained(self,init_guess=[0.5, 0.5]):
+        
+        par = self.par
+
+        def objective_function(x):
+            x1A, x2A = x
+            return -self.utility_A(x1A, x2A)  
+
+        # We define constraints
+        constraints = ({'type': 'ineq', 'fun': lambda x: self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(par.w1B, par.w2B)})
+
+        # Minimize the negative utility function subject to constraints
+        result = optimize.minimize(objective_function, init_guess, constraints=constraints, bounds=[(0, 1), (0, 1)],method='SLSQP')
+
+        # Extract optimal allocation
+        optimal_allocation_A = result.x
+        optimal_allocation_B = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
+
+        return optimal_allocation_A, optimal_allocation_B
