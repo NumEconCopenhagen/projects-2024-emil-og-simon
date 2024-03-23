@@ -127,3 +127,25 @@ class ExchangeEconomyClass():
         optimal_allocation_B = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
 
         return optimal_allocation_A, optimal_allocation_B
+    
+
+    def find_optimal_6a(self,init_guess=[0.5, 0.5]):
+        
+        par = self.par
+
+        def aggr_utility_func(x):
+            x1A, x2A = x
+            return -(self.utility_A(x1A, x2A) + self.utility_B(1-x1A, 1-x2A))
+
+        # We define the constraint given that we have to maximize utility subject to the supply available in the economy
+        constraints = ({'type': 'ineq', 'fun': lambda x: x[0]-par.w1A+(1-x[0])-(1-par.w1A)})
+        # Minimize the negative utility function subject to constraints
+        result = optimize.minimize(aggr_utility_func, init_guess, constraints=constraints, bounds=[(0,1),(0,1)], method='SLSQP')
+
+        # Extract optimal allocation
+        optimal_xA_6a = result.x
+        optimal_xB_6a = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
+        utility_A_6a = self.utility_A(result.x[0],result.x[1])
+        utility_B_6a = self.utility_B(1-result.x[0],1-result.x[1])
+
+        return optimal_xA_6a, optimal_xB_6a, utility_A_6a, utility_B_6a
