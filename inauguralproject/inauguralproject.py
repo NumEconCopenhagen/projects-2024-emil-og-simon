@@ -73,28 +73,7 @@ class ExchangeEconomyClass():
 
         return x1B,x2B
       
-    #Delete this function?!
-    def find_optimal_allocation(self):
-        # Initialize variables to store optimal allocations
-        optimal_allocations = []
-
-        # Iterate over all possible combinations of goods for consumer A
-        for x1A in range(N + 1):
-            for x2A in range(N + 1):
-                x1B = N - x1A
-                x2B = N - x2A
-
-                # Calculate utilities for both consumers
-                uA = self.utility_A(x1A, x2A)
-                uB = self.utility_B(x1B, x2B)
-
-                # Check if allocations satisfy the conditions
-                if uA >= self.utility_A(self.par.w1A, self.par.w2A) and uB >= self.utility_B(self.par.w1B, self.par.w2B):
-                    optimal_allocations.append(((x1A/self.par.N, x2A/self.par.N), (x1B/N, x2B/N)))
-
-        return optimal_allocations
       
-
     def check_market_clearing(self,p1):
 
         par = self.par
@@ -123,10 +102,10 @@ class ExchangeEconomyClass():
         result = optimize.minimize(objective_function, init_guess, constraints=constraints, bounds=[(0,1),(0,1)], method='SLSQP')
 
         # Extract optimal allocation
-        optimal_allocation_A = result.x
-        optimal_allocation_B = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
+        optimal_X_A_5a = result.x
+        optimal_X_B_5a = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
 
-        return optimal_allocation_A, optimal_allocation_B
+        return optimal_X_A_5a, optimal_X_B_5a
     
 
     def find_optimal_6a(self,init_guess=[0.5, 0.5]):
