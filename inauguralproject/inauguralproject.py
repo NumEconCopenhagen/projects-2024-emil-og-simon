@@ -79,10 +79,10 @@ class ExchangeEconomyClass():
         optimal_allocations = []
 
         # Iterate over all possible combinations of goods for consumer A
-        for x1A in range(self.par.N + 1):
-            for x2A in range(self.par.N + 1):
-                x1B = self.par.N - x1A
-                x2B = self.par.N - x2A
+        for x1A in range(N + 1):
+            for x2A in range(N + 1):
+                x1B = N - x1A
+                x2B = N - x2A
 
                 # Calculate utilities for both consumers
                 uA = self.utility_A(x1A, x2A)
@@ -90,7 +90,7 @@ class ExchangeEconomyClass():
 
                 # Check if allocations satisfy the conditions
                 if uA >= self.utility_A(self.par.w1A, self.par.w2A) and uB >= self.utility_B(self.par.w1B, self.par.w2B):
-                    optimal_allocations.append(((x1A/self.par.N, x2A/self.par.N), (x1B/self.par.N, x2B/self.par.N)))
+                    optimal_allocations.append(((x1A/self.par.N, x2A/self.par.N), (x1B/N, x2B/N)))
 
         return optimal_allocations
       
@@ -108,6 +108,7 @@ class ExchangeEconomyClass():
         return eps1,eps2
     
 
+
     def find_optimal_allocation_constrained(self,init_guess=[0.5, 0.5]):
         
         par = self.par
@@ -118,9 +119,8 @@ class ExchangeEconomyClass():
 
         # We define constraints
         constraints = ({'type': 'ineq', 'fun': lambda x: self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(par.w1B, par.w2B)})
-
         # Minimize the negative utility function subject to constraints
-        result = optimize.minimize(objective_function, init_guess, constraints=constraints, bounds=[(0, 1), (0, 1)],method='SLSQP')
+        result = optimize.minimize(objective_function, init_guess, constraints=constraints, bounds=[(0,1),(0,1)], method='SLSQP')
 
         # Extract optimal allocation
         optimal_allocation_A = result.x
