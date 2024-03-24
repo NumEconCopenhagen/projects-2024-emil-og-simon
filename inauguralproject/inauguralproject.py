@@ -86,7 +86,36 @@ class ExchangeEconomyClass():
 
         return eps1,eps2
     
+    #def find_optimal_5a(self, init_guess=[0.5, 0.5]):
+        #par = self.par
 
+        #def objective_function(x):
+            #x1A, x2A = x
+            #return -self.utility_A(x1A, x2A)
+
+        # We tried to define the constraints for A, B and x1A and x2A rescted to C
+        #def constraint1(x):
+        #return self.utility_A(x[0], x[1]) - self.utility_A(par.w1A, par.w2A)
+    
+        #def constraint2(x):
+            #return self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(1 - par.w1A, 1 - par.w2A)
+    
+        #def constraint3(x):
+            #x1A, x2A = x
+            #return some defining constraint so that x1A and x2A are in {0, 1/N, 2/N, ..., 1}, N=75. Unsuccesful.
+    
+        #constraints = ({'type': 'ineq', 'fun': constraint1},
+                       #{'type': 'ineq', 'fun': constraint2},
+                       #{'type': 'ineq', 'fun': constraint3})
+             
+    # Minimize the negative utility function subject to constraints         
+        #result = optimize.minimize(objective_function, init_guess, bounds=([0, 1], [0, 1]), constraints=constraints, method='SLSQP')
+
+    # We would extract optimal allocation
+        #optimal_xA_5a = result.x
+        #optimal_xB_5a = [1 - result.x[0], 1 - result.x[1]]  # Calculate B's allocation from A's
+
+        #return optimal_xA_5a, optimal_xB_5a
 
     def find_optimal_5b(self,init_guess=[0.5, 0.5]):
         
@@ -97,7 +126,8 @@ class ExchangeEconomyClass():
             return -self.utility_A(x1A, x2A)
 
         # We define constraints
-        constraints = ({'type': 'ineq', 'fun': lambda x: self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(1-par.w1A, 1-par.w2A)})
+        constraints = ({'type': 'ineq', 'fun': lambda x: self.utility_A(x[0], x[1]) - self.utility_A(par.w1A, par.w2A)},
+                       {'type': 'ineq', 'fun': lambda x: self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(1-par.w1A, 1-par.w2A)})
              
         # Minimize the negative utility function subject to constraints         
         result = optimize.minimize(objective_function, init_guess, bounds=([0,1],[0,1]), constraints=constraints, method='SLSQP')
