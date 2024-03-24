@@ -88,24 +88,25 @@ class ExchangeEconomyClass():
     
 
 
-    def find_optimal_allocation_constrained(self,init_guess=[0.5, 0.5]):
+    def find_optimal_5b(self,init_guess=[0.5, 0.5]):
         
         par = self.par
 
         def objective_function(x):
             x1A, x2A = x
-            return -self.utility_A(x1A, x2A)  
+            return -self.utility_A(x1A, x2A)
 
         # We define constraints
-        constraints = ({'type': 'ineq', 'fun': lambda x: self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(par.w1B, par.w2B)})
-        # Minimize the negative utility function subject to constraints
-        result = optimize.minimize(objective_function, init_guess, constraints=constraints, bounds=[(0,1),(0,1)], method='SLSQP')
+        constraints = ({'type': 'ineq', 'fun': lambda x: self.utility_B(1 - x[0], 1 - x[1]) - self.utility_B(1-par.w1A, 1-par.w2A)})
+             
+        # Minimize the negative utility function subject to constraints         
+        result = optimize.minimize(objective_function, init_guess, bounds=([0,1],[0,1]), constraints=constraints, method='SLSQP')
 
         # Extract optimal allocation
-        optimal_X_A_5a = result.x
-        optimal_X_B_5a = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
+        optimal_xA_5b = result.x
+        optimal_xB_5b = [1 - result.x[0], 1 - result.x[1]]  # Here we calculate B's allocation from A's
 
-        return optimal_X_A_5a, optimal_X_B_5a
+        return optimal_xA_5b, optimal_xB_5b
     
 
     def find_optimal_6a(self,init_guess=[0.5, 0.5]):
