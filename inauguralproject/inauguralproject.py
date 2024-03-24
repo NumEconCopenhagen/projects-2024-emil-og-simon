@@ -3,7 +3,6 @@ import numpy as np
 from scipy import optimize
 
 
-
 def square(x):
     """ square numpy array
     
