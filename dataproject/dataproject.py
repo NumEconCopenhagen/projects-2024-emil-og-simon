@@ -11,6 +11,6 @@ def keep_regs(df, regs):
     
     for r in regs:
         I = df.reg.str.contains(r)
-        df = df.loc[I == False] # keep everything else
+        df = df.loc[I, :] # keep everything else
     
     return df
