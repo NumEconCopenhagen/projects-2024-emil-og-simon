@@ -1,4 +1,11 @@
 from scipy import optimize
+from types import SimpleNamespace
+import numpy as np
+
+class CournotModelClass():
+    def solve_ss(alpha, c):
+    
+    return result
 
 def solve_ss(alpha, c):
     """ Example function. Solve for steady state k. 
