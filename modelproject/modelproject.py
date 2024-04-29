@@ -1,6 +1,7 @@
 from scipy import optimize
 from types import SimpleNamespace
 import numpy as np
+import sympy as sm
 
 class CournotModelClass():
     
@@ -8,20 +9,26 @@ class CournotModelClass():
 
         par = self.par = SimpleNamespace()
 
+        par.a = 1
+        par.b = 1
+        par.mc = 1
+
         # a. preferences
-        par.alpha = 1/3
-        par.beta = 2/3
-        par.p2 = 1
-        par.N = 75
 
-        # b. endowments
-        par.w1A = 0.8
-        par.w2A = 0.3
+    def sympy_solve():
+        
+        a = sm.symbols('a')
+        b = sm.symbols('b')
+        mc = sm.symbols('MC')
+        q1 = sm.symbols('q1')
+        q2 = sm.symbols('q2')
 
-        # We add the constraints for the endowments
-        par.w1B = 1 - par.w1A
-        par.w2B = 1 - par.w2A
+        p = a-b*q1-b*q2
 
+        eq = sm.Eq((p-mc)*q1,(p-mc)*q2)
+        sol_q1 = sm.solve(eq,q1)[0]
+        sol_q2 = sm.solve(eq,q2)[0]
+        return sol_q1, sol_q2
     
     #def solve_ss(alpha, c):
     
