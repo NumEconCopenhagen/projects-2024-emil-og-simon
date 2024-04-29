@@ -3,9 +3,29 @@ from types import SimpleNamespace
 import numpy as np
 
 class CournotModelClass():
-    def solve_ss(alpha, c):
     
-    return result
+    def __init__(self):
+
+        par = self.par = SimpleNamespace()
+
+        # a. preferences
+        par.alpha = 1/3
+        par.beta = 2/3
+        par.p2 = 1
+        par.N = 75
+
+        # b. endowments
+        par.w1A = 0.8
+        par.w2A = 0.3
+
+        # We add the constraints for the endowments
+        par.w1B = 1 - par.w1A
+        par.w2B = 1 - par.w2A
+
+    
+    #def solve_ss(alpha, c):
+    
+    #return result
 
 def solve_ss(alpha, c):
     """ Example function. Solve for steady state k. 
