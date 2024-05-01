@@ -15,7 +15,7 @@ class CournotModelClass():
 
         # a. preferences
 
-    def sympy_solve():
+    def sympy_solve(self):
         
         a = sm.symbols('a')
         b = sm.symbols('b')
@@ -28,6 +28,7 @@ class CournotModelClass():
         eq = sm.Eq((p-mc)*q1,(p-mc)*q2)
         sol_q1 = sm.solve(eq,q1)[0]
         sol_q2 = sm.solve(eq,q2)[0]
+        
         return sol_q1, sol_q2
     
     #def solve_ss(alpha, c):
