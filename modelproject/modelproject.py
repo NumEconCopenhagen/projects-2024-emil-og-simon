@@ -196,3 +196,25 @@ def nash_eq_mc_var(a, b):
     print(f'In an oligopoly with firm individual and variable MC, the total output is: {total_output_mc_var:1.3f}')
 
     return q1_star_mc_var, q2_star_mc_var, q3_star_mc_var, total_output_mc_var
+
+
+##FOR CONCLUSION##
+
+def plot_results(a, b, mc_duo, mc_oligo):
+# Calculate quantities for each case
+    q1_star, q2_star, total_output = nash_eq_duo(a, b, mc_duo)
+    q1_star_oligo, q2_star_oligo, q3_star_oligo, total_output_oligo = nash_eq_oligo(a, b, mc_oligo)
+    q1_star_mc_var, q2_star_mc_var, q3_star_mc_var, total_output_mc_var = nash_eq_mc_var(a, b)
+
+    # Create a bar plot
+    labels = ['Duopoly', 'Oligopoly\n(without MC function)', 'Oligopoly\n(with MC function)']
+    outputs = [total_output, total_output_oligo, total_output_mc_var]
+
+    plt.figure(figsize=(10, 6))
+    plt.bar(labels, outputs, color=['blue', 'orange', 'green'])
+    plt.xlabel('Market Structure')
+    plt.ylabel('Total Output')
+    plt.title('Comparison of Total Output Across Market Structures')
+    plt.show()
+
+    return plt.gcf()
