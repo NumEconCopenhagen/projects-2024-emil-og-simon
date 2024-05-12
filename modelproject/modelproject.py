@@ -238,7 +238,7 @@ def nash_eq_mc_var(a, b):
 ##FOR CONCLUSION##
 
 def plot_results(a, b, mc_duo, mc_oligo):
-# Calculate quantities for each case
+# Calculate quantities for each case.
     q1_star, q2_star, total_output = nash_eq_duo(a, b, mc_duo)
     q1_star_oligo, q2_star_oligo, q3_star_oligo, total_output_oligo = nash_eq_oligo(a, b, mc_oligo)
     q1_star_mc_var, q2_star_mc_var, q3_star_mc_var, total_output_mc_var = nash_eq_mc_var(a, b)
