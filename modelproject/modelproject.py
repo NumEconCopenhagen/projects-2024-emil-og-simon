@@ -79,7 +79,41 @@ def plot_duo(mc_duo):
 
     return plt.gcf()
 
+def plot_profit_duo(a, b, mc_duo):
 
+    def tot_profit_duo(q, a, b, mc_duo):
+        q1, q2 = q
+        return profit_1_duo(a, b, q1, q2, mc_duo) + profit_2_duo(a, b, q1, q2, mc_duo)
+
+    result_duo = optimize.root(lambda q: H_duo(q, a, b, mc_duo), [0.1, 0.1])
+    q_star = result_duo.x
+    q1_star, q2_star = q_star
+
+    profit_star = tot_profit_duo(q_star, a, b, mc_duo)
+
+    q1_range = np.linspace(0, 20, 100)
+    q2_range = np.linspace(0, 20, 100)
+    q1, q2 = np.meshgrid(q1_range, q2_range)
+    profit = tot_profit_duo([q1, q2], a, b, mc_duo)
+
+    profit[profit < 0] = np.nan
+
+    fig = plt.figure(figsize=(10, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(q1, q2, profit, cmap='viridis', alpha=0.7)
+    ax.scatter(q1_star, q2_star, profit_star, color='red', label='Nash Equilibrium')
+    ax.set_xlabel('q1')
+    ax.set_ylabel('q2')
+    ax.set_zlabel('Total Profit')
+    ax.set_title('Cournot Model')
+
+
+    ax.text(q1_star, q2_star, profit_star, f'({q1_star:.2f}, {q2_star:.2f}, {profit_star:.2f})', color='black')
+
+    ax.legend()
+    plt.show()
+
+    return plt.gcf()
 
 ##CODE FOR THE COURNOT OLIGOPOL (FURTHER ANALYSIS)##
 
@@ -183,6 +217,9 @@ def nash_eq_mc_var(a, b):
     # It minimizes the sum of squares of the errors in the system of equations, while we set the bounds to include only positive solutions.
     result_mc_var = optimize.minimize(lambda q: np.sum(np.square(H_mc_var(q,a,b, mc1(q[0]), mc2(q[1]), mc3(q[2])))),
                            x0=[0.1, 0.1, 0.1], bounds=[(0, None), (0, None), (0, None)], method='nelder-mead')
+
+    #we tried solving with the optimize.root at first but were not able to make it work and instead we used optimize.minimize as above
+    #result_mc_var = optimize.root(lambda q: H_mc_var(q, a, b, mc1, mc2, mc3), [0.1, 0.1, 0.1])
 
     # We extract the equilibrium quantities
     q_star_mc_var = result_mc_var.x
