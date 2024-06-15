@@ -1,6 +1,5 @@
 import numpy as np
 from scipy import optimize
-import sympy as sm
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import ipywidgets as widgets
@@ -77,8 +76,6 @@ def plot_duo(mc_duo):
     plt.grid(True)
     plt.show()
 
-    return plt.gcf()
-
 def plot_profit_duo(a, b, mc_duo):
 
     def tot_profit_duo(q, a, b, mc_duo):
@@ -112,8 +109,6 @@ def plot_profit_duo(a, b, mc_duo):
 
     ax.legend()
     plt.show()
-
-    return plt.gcf()
 
 ##CODE FOR THE COURNOT OLIGOPOL (FURTHER ANALYSIS)##
 
@@ -253,5 +248,3 @@ def plot_results(a, b, mc_duo, mc_oligo):
     plt.ylabel('Total Output')
     plt.title('Comparison of Total Output Across Market Structures')
     plt.show()
-
-    return plt.gcf()
