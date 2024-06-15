@@ -75,6 +75,11 @@ def table_size_overview(x):
                                          '50-249 employees', 
                                          '250 employees and more', 
                                          'Total, all enterprises'])
+    
+    #We rename the columns to make it more clear
+    table_size.columns = [f"size{col}" for col in table_size.columns]  
+    table_size = table_size.reset_index() # We reset the index to combine size and values into the columns
+
     table_size
     return table_size
 
@@ -122,6 +127,11 @@ def table_industries_overview(x):
                                          '10 Arts, entertainment and other services',
                                          '11 Activity not stated',
                                          'TOT Industry total'])
+    
+    #We rename the columns to make it more clear
+    table_industries.columns = [f"ind{col}" for col in table_industries.columns]  
+    table_industries = table_industries.reset_index() # We reset the index to combine size and values into the columns
+
     table_industries
     return table_industries
 
@@ -212,6 +222,20 @@ def clean_demo4_data(x):
     print("Cleaning has been done successfully.")
     demo4_reduced
     return demo4_reduced
+
+# EXPLORING THE DATASET
+def pivot_demo4(demo4):
+    demo4_pivot = demo4.pivot(index='x', columns='year', values='total')
+    # We create a dictionary to rename columns
+    col_dict = {year: f'var{year}' for year in demo4_pivot.columns}
+
+    # We rename the columns
+    demo4_pivot.rename(columns=col_dict, inplace=True)
+
+    # We reset index to include 'x' as a column
+    demo4_pivot.reset_index(inplace=True)
+    demo4_pivot
+    return demo4_pivot
 
 # MERGING THE DATASETS (DEMO4 AND GF02)
 
