@@ -68,4 +68,3 @@ def check_market_clearing(p1_grid, p2_grid):
             print(f"Market clearing result: {market_clearing[i, j]}")
             print("-" * 50)
     return market_clearing
-
