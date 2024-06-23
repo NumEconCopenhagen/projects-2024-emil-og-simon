@@ -15,3 +15,5 @@ All the code along with explanations are to be found in the notebook. We have on
 **Dependencies:** Apart from a standard Anaconda Python 3 installation, the project requires the following installations:
 #%pip install git+
 ``pip install matplotlib-venn``
+
+NB: we find that python might report some problems with "Display" in our py-file. However, it does not seem to have any influence on running the project and the results. We have not been able to find out why it does so. We hope it does not cause any problems for you.
