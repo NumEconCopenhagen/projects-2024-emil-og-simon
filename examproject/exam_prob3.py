@@ -2,15 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## Functions ##
-
-# Defining a function which finds a point x given the conditions for y
+# We define a function which finds a point x given the conditions for y
 def find_point(X, y, condition):
     filtered_points = [point for point in X if condition(point, y)]
     if not filtered_points:
         return None
     return min(filtered_points, key=lambda point: np.sqrt((point[0]-y[0])**2 + (point[1]-y[1])**2))
 
-# This function finds the points A,B,C,D in X
+# We set up this function to find the points A,B,C,D in X
 def compute_ABCD(X, y):
     A = find_point(X, y, lambda point, y: point[0] > y[0] and point[1] > y[1])
     B = find_point(X, y, lambda point, y: point[0] > y[0] and point[1] < y[1])
@@ -27,11 +26,11 @@ def barycentric_coordinates(A,B,C,y):
     r3 = 1 - r1 - r2
     return r1, r2, r3
 
-# Checks to see if if a given point is inside the triangle
+# We checks to see if if a given point is inside the triangle
 def is_inside_triangle(r1, r2, r3):
     return 0 <= r1 <= 1 and 0 <= r2 <= 1 and 0 <= r3 <= 1
 
-# This function interpolates the value of f in point y in X. Including the stpes from the task.
+# This function interpolates the value of f in point y in X. Including the steps from the task.
 def interpolate_or_nan(f, X, y):
     # Step 1
     A, B, C, D = compute_ABCD(X, y)
@@ -54,7 +53,7 @@ def interpolate_or_nan(f, X, y):
 
 ## Plots ##
 
-# Plotting Q1
+# For question 1
 def plot_q1(X, y, A, B, C, D):
     plt.figure(figsize=(8, 8))
     plt.scatter(X[:, 0], X[:, 1], c='blue', label='Points in X')
@@ -77,7 +76,7 @@ def plot_q1(X, y, A, B, C, D):
     plt.grid(True)
     plt.show()
 
-# Plotting Q2
+# For question 2
 def plot_q2(X, y):
     A, B, C, D = compute_ABCD(X, y)
     
@@ -120,7 +119,7 @@ def plot_q2(X, y):
     plt.grid(True)
     plt.show()
 
-# Plotting Q4
+# For question 4
 def plot_q4(X, Y, f):
     plt.figure(figsize=(12, 10))
 
