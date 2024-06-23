@@ -1,12 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+## Functions ##
+
+# Defining a function which finds a point x given the conditions for y
 def find_point(X, y, condition):
     filtered_points = [point for point in X if condition(point, y)]
     if not filtered_points:
         return None
     return min(filtered_points, key=lambda point: np.sqrt((point[0]-y[0])**2 + (point[1]-y[1])**2))
 
+# This function finds the points A,B,C,D in X
 def compute_ABCD(X, y):
     A = find_point(X, y, lambda point, y: point[0] > y[0] and point[1] > y[1])
     B = find_point(X, y, lambda point, y: point[0] > y[0] and point[1] < y[1])
@@ -15,6 +19,7 @@ def compute_ABCD(X, y):
     
     return A, B, C, D
 
+# Defining a function that calculates the barycentric cordinates
 def barycentric_coordinates(A,B,C,y):
     denom = (B[1] - C[1])*(A[0] - C[0]) + (C[0] - B[0])*(A[1] - C[1])
     r1 = ((B[1] - C[1])*(y[0] - C[0]) + (C[0] - B[0])*(y[1] - C[1])) / denom
@@ -22,29 +27,34 @@ def barycentric_coordinates(A,B,C,y):
     r3 = 1 - r1 - r2
     return r1, r2, r3
 
+# Checks to see if if a given point is inside the triangle
 def is_inside_triangle(r1, r2, r3):
     return 0 <= r1 <= 1 and 0 <= r2 <= 1 and 0 <= r3 <= 1
 
+# This function interpolates the value of f in point y in X. Including the stpes from the task.
 def interpolate_or_nan(f, X, y):
-    # Step 1: Compute A, B, C, and D. If not possible return `NaN`.
+    # Step 1
     A, B, C, D = compute_ABCD(X, y)
     
     if A is None or B is None or C is None or D is None:
         return np.nan
     
-    # Step 2: If y is inside triangle ABC, return r^{ABC}_1 f(A) + r^{ABC}_2 f(B) + r^{ABC}_3 f(C).
+    # Step 2
     r1_ABC, r2_ABC, r3_ABC = barycentric_coordinates(A, B, C, y)
     if is_inside_triangle(r1_ABC, r2_ABC, r3_ABC):
         return r1_ABC * f(A) + r2_ABC * f(B) + r3_ABC * f(C)
     
-    # Step 3: If y is inside triangle CDA, we want to return r^{CDA}_1 f(C) + r^{CDA}_2 f(D) + r^{CDA}_3 f(A).
+    # Step 3
     r1_CDA, r2_CDA, r3_CDA = barycentric_coordinates(C, D, A, y)
     if is_inside_triangle(r1_CDA, r2_CDA, r3_CDA):
         return r1_CDA * f(C) + r2_CDA * f(D) + r3_CDA * f(A)
     
-    # Step 4: Otherwise we return `NaN`.
+    # Step 4
     return np.nan
 
+## Plots ##
+
+# Plotting Q1
 def plot_q1(X, y, A, B, C, D):
     plt.figure(figsize=(8, 8))
     plt.scatter(X[:, 0], X[:, 1], c='blue', label='Points in X')
@@ -67,7 +77,7 @@ def plot_q1(X, y, A, B, C, D):
     plt.grid(True)
     plt.show()
 
-
+# Plotting Q2
 def plot_q2(X, y):
     A, B, C, D = compute_ABCD(X, y)
     
@@ -110,6 +120,7 @@ def plot_q2(X, y):
     plt.grid(True)
     plt.show()
 
+# Plotting Q4
 def plot_q4(X, Y, f):
     plt.figure(figsize=(12, 10))
 
