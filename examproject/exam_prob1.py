@@ -3,42 +3,27 @@ import numpy as np
 from scipy import optimize
 import matplotlib.pyplot as plt
 
-def labor_demand(w, p, par):
+def labor_star(w, p, par):
     return (p * par.A * par.gamma / w) ** (1 / (1 - par.gamma))
 
-def production(w,p,par):
-    l_star = labor_demand(w, p, par)
+def production_star(w, p, par):
+    l_star = labor_star(w, p, par)
     return par.A * l_star ** par.gamma
 
 def profit(w, p, par):
-    l_star = labor_demand(w, p, par)
-    return (1 - par.gamma) / par.gamma * w * (l_star) ** (1 / (1 - par.gamma))
+    l_star = labor_star(w, p, par)
+    return (1 - par.gamma) / par.gamma * w * l_star
 
-def consumption(l, w, pi1, pi2, p, par):
-    budget = w * l + par.T + pi1 + pi2
-    return par.alpha * budget / (p + par.tau)
+def c1_l(w, p1, p2, T, par, l):
+    total_income = w * l + T + profit(w, p1, par) + profit(w, p2, par)
+    return par.alpha * total_income / p1
 
-def utility(l, w, pi1, pi2, p1, p2, par):
-    c1 = par.alpha * (w * l + par.T + pi1 + pi2) / p1
-    c2 = (1 - par.alpha) * (w * l + par.T + pi1 + pi2) / (p2 + par.tau)
-    return -1 * (np.log(c1 ** par.alpha * c2 ** (1 - par.alpha)) - par.nu * l ** (1 + par.epsilon) / (1 + par.epsilon))
+def c2_l(w, p1, p2, tau, T, par, l):
+    total_income = w * l + T + profit(w, p1, par) + profit(w, p2, par)
+    return (1 - par.alpha) * total_income / (p2 + tau)
 
-def check_market_clearing(p1_grid, p2_grid, par, w=1):
-    results = []
-    for p1 in p1_grid:
-        for p2 in p2_grid:
-            result = optimize.minimize(lambda l: utility(l, w, profit(w, p1, par), profit(w, p2, par), p1, p2, par), 0.5, bounds=[(0, None)])
-            l_star = result.x[0]
-            l1_star = labor_demand(w, p1, par)
-            l2_star = labor_demand(w, p2, par)
-            y1_star = production(l1_star, par)
-            y2_star = production(l2_star, par)
-            c1_star = consumption(l_star, w, profit(w, p1, par), profit(w, p2, par), p1, par)
-            c2_star = consumption(l_star, w, profit(w, p1, par), profit(w, p2, par), p2, par)
-            results.append({
-                'p1': p1, 'p2': p2,
-                'l_star': l_star, 'l_total': l1_star + l2_star,
-                'c1_star': c1_star, 'y1_star': y1_star,
-                'c2_star': c2_star, 'y2_star': y2_star
-            })
-    return results
+def utility(w, p1, p2, tau, T, par, l):
+    c1 = c1_l(w, p1, p2, tau, T, par, l)
+    c2 = c2_l(w, p1, p2, tau, T, par, l)
+    utility_value = np.log(c1**par.alpha * c2**(1 - par.alpha)) - par.nu * (l**(1 + par.epsilon)) / (1 + par.epsilon)
+    return -utility_value 
