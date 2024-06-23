@@ -16,7 +16,7 @@ def simulate_q1(par):
     for j in range(par.J):
         v_j = par.v[j]  # Accessing the j-th element of par.v
         expected_u[j] = v_j  # Calculate expected utility
-        avg_realized_u[j] = v_j + np.mean(epsilon[:, j])  # Calculate average realized utility
+        avg_realized_u[j] = v_j + np.mean(epsilon[:, j])  # Calculate average realized utility 
 
     # Print the results
     for j in range(par.J):
